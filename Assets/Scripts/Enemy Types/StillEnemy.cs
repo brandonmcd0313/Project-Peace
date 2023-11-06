@@ -4,7 +4,7 @@ using UnityEngine;
 using static UnityEditor.Experimental.GraphView.GraphView;
 
 [RequireComponent(typeof(Rigidbody2D))]
-public class StillEnemy : Enemy, IDamageable
+public class StillEnemy : Enemy
 {
     [Header("Enemy Variables")]
    [SerializeField] int _attackDamage;
@@ -13,22 +13,8 @@ public class StillEnemy : Enemy, IDamageable
     [SerializeField] int _health;
 
 
-    public int Health { get; set; }
 
-    public void Damage(int damage)
-    {
-        Health -= damage;
-        if(Health == 0)
-        {
-            OnDeath();
-        }
-        OnAttacked();
-    }
-
-    public void OnDeath()
-    {
-        Destroy(gameObject);
-    }
+   
        
     // Start is called before the first frame update
     protected override void Start()
@@ -52,6 +38,7 @@ public class StillEnemy : Enemy, IDamageable
     // Update is called once per frame
     void FixedUpdate()
     {
+        print(isAttacking);
         if(!isAttacking)
         {
             return;
@@ -69,7 +56,9 @@ public class StillEnemy : Enemy, IDamageable
     {
         if (collision.gameObject.tag == "Player" || collision.gameObject.tag == "Bullet")
         {
-            TryAttack(collision.gameObject);
+           
+            Attack(collision.gameObject);
         }
+        
     }
 }

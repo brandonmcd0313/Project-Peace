@@ -2,7 +2,7 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-public abstract class Enemy : MonoBehaviour
+public abstract class Enemy : MonoBehaviour, IDamageable
 {
     //variables that change with type of enemy
     protected int attackDamage;
@@ -11,19 +11,21 @@ public abstract class Enemy : MonoBehaviour
 
 
     //all enemies use the same 
-    protected bool canAttack;
-    protected bool isAttacking;
+    protected bool canAttack = false;
+    protected bool isAttacking = false;
     protected EnemyController controllerInstance;
     protected GameObject player;
+
+    public int Health { get; set; }
+
     // Start is called before the first frame update
     protected virtual void Start()
     {
-        canAttack = false;
+        isAttacking = false;
         player = GameObject.FindGameObjectWithTag("Player");
         controllerInstance = FindObjectOfType<EnemyController>();
         controllerInstance.OnPlayerAttackEnemy += OnAttacked;
-        Physics.IgnoreLayerCollision(3, 3); //ignore collsions with other objects in the enemy layer
-        Physics.IgnoreLayerCollision(3, 3); //ignore collsions with other objects in the enemy layer
+      
     }
 
     protected virtual void Attack(GameObject obj)
@@ -42,26 +44,32 @@ public abstract class Enemy : MonoBehaviour
 
     protected virtual void OnAttacked()
     {
+        print(gameObject.name + " was attacked");
         canAttack = true;
         isAttacking = true;
     }
     
-    protected virtual void TryAttack(GameObject obj)
-    {
-        if (!isAttacking)
-        {
-            //first time player is attacked
-            controllerInstance.OnPlayerAttackEnemy?.Invoke();
-            
-        }
-        else
-        {
-            Attack(obj);
-        }
-    }
+   
+    
     protected virtual IEnumerator AttackCooldown()
     {
         yield return new WaitForSeconds(attackCooldown);
         canAttack = true;
+    }
+
+    public void Damage(int damage)
+    {
+        Health -= damage;
+        if (Health == 0)
+        {
+            OnDeath();
+        }
+        //first time enemy has been attacked
+        controllerInstance.OnPlayerAttackEnemy?.Invoke();
+    }
+
+    public void OnDeath()
+    {
+        Destroy(gameObject);
     }
 }

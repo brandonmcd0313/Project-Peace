@@ -10,7 +10,7 @@ public class PlayerController : MonoBehaviour
     float _minXPosition, _maxXPosition, _minYPosition, _maxYPosition;
     Vector3 _defaultScale;
     bool isGrounded;
-    bool isFacingRight;
+    bool isFacingRight = true;
     // Start is called before the first frame update
     void Start()
     {

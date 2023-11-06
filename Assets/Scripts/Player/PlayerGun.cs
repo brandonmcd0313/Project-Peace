@@ -40,7 +40,7 @@ public class PlayerGun : MonoBehaviour
         if (Input.GetButtonDown("Fire1"))
         {
             //spawn a bullet at the tip of the weapon
-            Vector3 spawnPosition = new Vector3(weapon.transform.position.x + (weapon.GetComponent<BoxCollider2D>().size.x / 2) + (bulletPrefab.GetComponent<BoxCollider2D>().size.x /2),
+            Vector3 spawnPosition = new Vector3(weapon.transform.position.x + (weapon.GetComponent<BoxCollider2D>().size.x / 2) + (bulletPrefab.GetComponent<BoxCollider2D>().size.x),
                 weapon.transform.position.y, weapon.transform.position.z);
             GameObject bullet = Instantiate(bulletPrefab, weapon.transform.position, weapon.transform.rotation);
             bullet.transform.rotation = weapon.transform.rotation;

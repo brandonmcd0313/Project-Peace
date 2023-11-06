@@ -4,6 +4,7 @@ using UnityEngine;
 
 public class Bullet : MonoBehaviour
 {
+    int bulletDamage = 1;
     // Start is called before the first frame update
     void Start()
     {
@@ -21,6 +22,13 @@ public class Bullet : MonoBehaviour
         {
             return;
         }
+
+        //try to damage the object
+        if (collision.gameObject.TryGetComponent(out IDamageable damageableObject))
+        {
+            damageableObject.Damage(bulletDamage);
+        }
+
         //destroy this object
         Destroy(gameObject);
     }
