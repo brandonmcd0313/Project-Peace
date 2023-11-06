@@ -1,17 +1,20 @@
 using System.Collections;
 using System.Collections.Generic;
+using UnityEditor.ShaderGraph.Internal;
 using UnityEngine;
 
 public class PlayerController : MonoBehaviour
 {
     [SerializeField] float speed;
-    float _minXPosition;
-    float _maxXPosition;
-    float _minYPosition;
-    float _maxYPosition;
+    [SerializeField] float jumpForce;
+    float _minXPosition, _maxXPosition, _minYPosition, _maxYPosition;
+    Vector3 _defaultScale;
+    bool isGrounded;
+    bool isFacingRight;
     // Start is called before the first frame update
     void Start()
     {
+        _defaultScale = transform.localScale;
         _minXPosition = Camera.main.ViewportToWorldPoint(new Vector2(0, 0)).x;
         _maxXPosition = Camera.main.ViewportToWorldPoint(new Vector2(1, 0)).x;
         _minYPosition = Camera.main.ViewportToWorldPoint(new Vector2(0, 0)).y;
@@ -22,31 +25,47 @@ public class PlayerController : MonoBehaviour
     {
         if (Input.GetButtonDown("Reset"))
         {
-            OnPlayerDeath();
+            //reload scene
+            UnityEngine.SceneManagement.SceneManager.LoadScene(UnityEngine.SceneManagement.SceneManager.GetActiveScene().name);
         }
     }
     // Update is called once per frame
     void FixedUpdate()
     {
-        //movement on x and y axis
         float horizontalInput = Input.GetAxis("Horizontal");
-        float verticalInput = Input.GetAxis("Vertical");
-        transform.position += new Vector3(horizontalInput * speed * Time.deltaTime, verticalInput * speed * Time.deltaTime, 0f);
 
-        //if no input stop all movement
-        if (horizontalInput == 0 && verticalInput == 0)
+        transform.position += new Vector3(horizontalInput * speed * Time.deltaTime, 0);
+
+
+        //set sprite direction based on input
+        if (horizontalInput > 0)
         {
-            GetComponent<Rigidbody2D>().velocity = Vector2.zero;
+            isFacingRight = true;
+            transform.localScale = _defaultScale;
+        }
+        else if (horizontalInput < 0)
+        {
+            isFacingRight = false;
+            transform.localScale = new Vector3(-_defaultScale.x, _defaultScale.y, _defaultScale.z);
+        }
+
+        
+        if ((Input.GetButtonDown("Jump")|| (Input.GetKeyDown(KeyCode.Space)) && isGrounded))
+        {
+            isGrounded = false;
+            GetComponent<Rigidbody2D>().AddForce(new Vector2(0, jumpForce), ForceMode2D.Impulse);
+        
         }
         
-        //rotate to be in the direction of the mouse
-        Vector3 mousePos = Camera.main.ScreenToWorldPoint(Input.mousePosition);
-        Vector3 lookDir = mousePos - transform.position;
-        float angle = Mathf.Atan2(lookDir.y, lookDir.x) * Mathf.Rad2Deg - 90f;
-        transform.rotation = Quaternion.Euler(0f, 0f, angle);
-
         //if goes offscreen lock back on screen
-        
+        CheckScreenPosition();
+
+       
+
+    }
+
+    void CheckScreenPosition()
+    {
         if (transform.position.x < _minXPosition)
         {
             transform.position = new Vector3(_minXPosition, transform.position.y, transform.position.z);
@@ -65,22 +84,20 @@ public class PlayerController : MonoBehaviour
         }
 
 
-    }
 
+    }
     private void OnCollisionEnter2D(Collision2D collision)
     {
-        //if collides with enemy restart level
-        if (collision.gameObject.tag == "Enemy")
+        if(collision.gameObject.tag == "Platform")
         {
-            OnPlayerDeath();
-           
+            isGrounded = true;
         }
     }
 
-    void OnPlayerDeath()
+    
+
+    public bool isPlayerFacingRight()
     {
-        //restart anim here
-        //reload scene
-        UnityEngine.SceneManagement.SceneManager.LoadScene(0);
+        return isFacingRight; 
     }
 }
