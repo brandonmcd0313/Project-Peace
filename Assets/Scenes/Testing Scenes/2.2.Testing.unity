@@ -136,7 +136,7 @@ GameObject:
   - component: {fileID: 276896826}
   - component: {fileID: 276896825}
   - component: {fileID: 276896824}
-  m_Layer: 0
+  m_Layer: 6
   m_Name: Enemy
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -283,7 +283,7 @@ GameObject:
   m_Component:
   - component: {fileID: 385856122}
   - component: {fileID: 385856123}
-  m_Layer: 0
+  m_Layer: 3
   m_Name: Torch Light 2D
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -531,9 +531,10 @@ GameObject:
   - component: {fileID: 596182870}
   - component: {fileID: 596182869}
   - component: {fileID: 596182868}
+  - component: {fileID: 596182872}
   - component: {fileID: 596182867}
   - component: {fileID: 596182866}
-  m_Layer: 0
+  m_Layer: 3
   m_Name: Player
   m_TagString: Player
   m_Icon: {fileID: 0}
@@ -677,7 +678,7 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 596182865}
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: -7.0233, y: -0.4841, z: 0}
+  m_LocalPosition: {x: -5.4, y: -0.55, z: 0}
   m_LocalScale: {x: 3.0891001, y: 4.1898003, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children:
@@ -686,6 +687,19 @@ Transform:
   m_Father: {fileID: 0}
   m_RootOrder: 2
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &596182872
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 596182865}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: d294c2673cd871d4185571e8077fa24c, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  _health: 3
 --- !u!1 &687745189
 GameObject:
   m_ObjectHideFlags: 0
@@ -863,7 +877,7 @@ GameObject:
   - component: {fileID: 992744291}
   - component: {fileID: 992744293}
   - component: {fileID: 992744292}
-  m_Layer: 0
+  m_Layer: 3
   m_Name: Weapon
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -976,7 +990,7 @@ GameObject:
   - component: {fileID: 1040176652}
   - component: {fileID: 1040176651}
   - component: {fileID: 1040176650}
-  m_Layer: 0
+  m_Layer: 6
   m_Name: Enemy (1)
   m_TagString: Untagged
   m_Icon: {fileID: 0}
