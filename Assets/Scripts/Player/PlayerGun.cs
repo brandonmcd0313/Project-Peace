@@ -13,14 +13,7 @@ public class PlayerGun : MonoBehaviour
     [Tooltip("The angle range the weapon can rotate to")]
     [SerializeField] Vector2 angleRange; 
     
-    PlayerController _playerController;
-    
-    // Start is called before the first frame update
-    void Start()
-    {
-        _playerController = this.GetComponent<PlayerController>();
-    }
-
+   
     // Update is called once per frame
     void Update()
     {
@@ -28,8 +21,17 @@ public class PlayerGun : MonoBehaviour
         Vector3 mousePosition = Camera.main.ScreenToWorldPoint(Input.mousePosition);
         Vector3 directionToMouse = (mousePosition - weapon.transform.position).normalized;
         float angleToMouse = Mathf.Atan2(directionToMouse.y, directionToMouse.x) * Mathf.Rad2Deg;
-
        
+        //translate angle to be between -180 and 180
+        if(angleToMouse >= 90)
+        {
+            angleToMouse -= 180;
+        }
+        else if(angleToMouse < -90)
+        {
+            angleToMouse += 180;
+        }
+        angleToMouse = Mathf.Clamp(angleToMouse, angleRange.x, angleRange.y);
         // Set the rotation of the weapon based on the clamped angle
         weapon.transform.rotation = Quaternion.Euler(0, 0, angleToMouse);
 
@@ -43,7 +45,14 @@ public class PlayerGun : MonoBehaviour
             GameObject bullet = Instantiate(bulletPrefab, weapon.transform.position, weapon.transform.rotation);
             bullet.transform.rotation = weapon.transform.rotation;
             //add force in the direction the weapon is facing
-            bullet.GetComponent<Rigidbody2D>().AddForce(weapon.transform.up * bulletSpeed, ForceMode2D.Impulse);
+            if(GetComponent<PlayerController>().isPlayerFacingRight())
+            {
+                bullet.GetComponent<Rigidbody2D>().AddForce(weapon.transform.right * bulletSpeed, ForceMode2D.Impulse);
+            }
+            else
+            {
+                bullet.GetComponent<Rigidbody2D>().AddForce(-weapon.transform.right * bulletSpeed, ForceMode2D.Impulse);
+            }
 
         }
     }

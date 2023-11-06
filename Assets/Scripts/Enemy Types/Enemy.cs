@@ -22,6 +22,8 @@ public abstract class Enemy : MonoBehaviour
         player = GameObject.FindGameObjectWithTag("Player");
         controllerInstance = FindObjectOfType<EnemyController>();
         controllerInstance.OnPlayerAttackEnemy += OnAttacked;
+        Physics.IgnoreLayerCollision(3, 3); //ignore collsions with other objects in the enemy layer
+        Physics.IgnoreLayerCollision(3, 3); //ignore collsions with other objects in the enemy layer
     }
 
     protected virtual void Attack(GameObject obj)
