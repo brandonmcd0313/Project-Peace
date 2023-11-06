@@ -44,12 +44,18 @@ public abstract class Enemy : MonoBehaviour, IDamageable
 
     protected virtual void OnAttacked()
     {
-        print(gameObject.name + " was attacked");
-        canAttack = true;
-        isAttacking = true;
+        if (isAttacking)
+        {
+            return;
+        }
+            print(gameObject.name + " was attacked");
+            canAttack = true;
+            isAttacking = true;
+        //activate for other enemies
+        controllerInstance.OnPlayerAttackEnemy?.Invoke();
+        
+        
     }
-    
-   
     
     protected virtual IEnumerator AttackCooldown()
     {
@@ -64,8 +70,7 @@ public abstract class Enemy : MonoBehaviour, IDamageable
         {
             OnDeath();
         }
-        //first time enemy has been attacked
-        controllerInstance.OnPlayerAttackEnemy?.Invoke();
+       
     }
 
     public void OnDeath()

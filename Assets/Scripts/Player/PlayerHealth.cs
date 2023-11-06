@@ -9,7 +9,8 @@ public class PlayerHealth : MonoBehaviour, IDamageable
     public int Health { get; set; }
 
     void Start()
-    { 
+    {
+        Health = _health;
     }
     public void Damage(int damage)
     {
@@ -18,7 +19,7 @@ public class PlayerHealth : MonoBehaviour, IDamageable
         {
             OnDeath();
         
-    }
+       }
     }
 
     public void OnDeath()

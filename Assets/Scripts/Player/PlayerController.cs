@@ -37,20 +37,22 @@ public class PlayerController : MonoBehaviour
         transform.position += new Vector3(horizontalInput * speed * Time.deltaTime, 0);
 
 
-        //set sprite direction based on input
-        if (horizontalInput > 0)
+        //set sprite direction based on mouse direction
+        //if mouse is to the right of the player the player IS FACING RIGHT
+        Vector3 mousePosition = Camera.main.ScreenToWorldPoint(Input.mousePosition);
+        if (mousePosition.x > transform.position.x)
         {
             isFacingRight = true;
             transform.localScale = _defaultScale;
         }
-        else if (horizontalInput < 0)
+        else
         {
             isFacingRight = false;
             transform.localScale = new Vector3(-_defaultScale.x, _defaultScale.y, _defaultScale.z);
         }
 
-        
-        if ((Input.GetButtonDown("Jump")|| (Input.GetKeyDown(KeyCode.Space)) && isGrounded))
+
+        if ((Input.GetButton("Jump")|| Input.GetKey(KeyCode.Space)) && isGrounded)
         {
             isGrounded = false;
             GetComponent<Rigidbody2D>().AddForce(new Vector2(0, jumpForce), ForceMode2D.Impulse);

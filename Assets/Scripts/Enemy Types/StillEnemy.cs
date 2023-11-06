@@ -38,7 +38,6 @@ public class StillEnemy : Enemy
     // Update is called once per frame
     void FixedUpdate()
     {
-        print(isAttacking);
         if(!isAttacking)
         {
             return;
@@ -56,7 +55,8 @@ public class StillEnemy : Enemy
     {
         if (collision.gameObject.tag == "Player" || collision.gameObject.tag == "Bullet")
         {
-           
+            //it has both been attacked and is trying to attack
+            OnAttacked();
             Attack(collision.gameObject);
         }
         
