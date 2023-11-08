@@ -1,5 +1,6 @@
 using System.Collections;
 using System.Collections.Generic;
+using TMPro.EditorUtilities;
 using UnityEngine;
 
 public abstract class Enemy : MonoBehaviour, IDamageable
@@ -8,9 +9,13 @@ public abstract class Enemy : MonoBehaviour, IDamageable
     protected int attackDamage;
     protected float attackCooldown;
     protected float speed;
+    protected float damageForce;
+    protected bool useDamageForce;
+    protected bool canMoveOnYAxis;
 
 
     //all enemies use the same 
+    protected bool isPreformingAttack = false;
     protected bool canAttack = false;
     protected bool isAttacking = false;
     protected EnemyController controllerInstance;
@@ -30,6 +35,7 @@ public abstract class Enemy : MonoBehaviour, IDamageable
 
     protected virtual void Attack(GameObject obj)
     {
+       
         if(!canAttack)
         {
             return;
@@ -37,8 +43,28 @@ public abstract class Enemy : MonoBehaviour, IDamageable
         
         if (obj.TryGetComponent(out IDamageable damageableObject))
         {
+            isPreformingAttack = true;
             damageableObject.Damage(attackDamage);
             print(this.gameObject.name + " attacked " + obj.name + " for " + attackDamage + " damage");
+
+            if(!useDamageForce)
+            {
+                return;
+            }
+
+            //apply a force in the opposite direction of the obj
+            Vector2 forceDirection = (transform.position - obj.transform.position).normalized;
+            if (!canMoveOnYAxis)
+            {
+                forceDirection.y = 0;
+            }
+            print("applied force");
+            GetComponent<Rigidbody2D>().AddForce(damageForce * forceDirection, ForceMode2D.Impulse);
+
+            //apply a force on the obj being attacked
+            obj.GetComponent<Rigidbody2D>().AddForce(-damageForce/2 * forceDirection, ForceMode2D.Impulse);
+
+
         }
     }
 

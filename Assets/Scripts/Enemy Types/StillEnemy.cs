@@ -7,25 +7,28 @@ using static UnityEditor.Experimental.GraphView.GraphView;
 public class StillEnemy : Enemy
 {
     [Header("Enemy Variables")]
-   [SerializeField] int _attackDamage;
+    [SerializeField] int _attackDamage;
     [SerializeField] float _attackCooldown;
-    [SerializeField] float _speed;
+    [SerializeField] float _attackSpeed;
     [SerializeField] int _health;
+    [SerializeField] float _damageForce;
+    [SerializeField] bool _useDamageForce;
+    [SerializeField] bool _canMoveOnYAxis;
 
-
-
-   
-       
     // Start is called before the first frame update
     protected override void Start()
     {
         //prevent the object from moving due to gravity
         GetComponent<Rigidbody2D>().isKinematic = true;
         base.Start();
+
         Health = _health;
         attackDamage = _attackDamage;
         attackCooldown = _attackCooldown;
-        speed = _speed; 
+        speed = _attackSpeed;
+        damageForce = _damageForce;
+        useDamageForce = _useDamageForce;
+        canMoveOnYAxis = _canMoveOnYAxis;
     }
 
     protected override void OnAttacked()
