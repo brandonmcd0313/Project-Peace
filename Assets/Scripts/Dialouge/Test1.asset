@@ -12,7 +12,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 0d86413bbb3ba504983928cf0da9d2c0, type: 3}
   m_Name: Test1
   m_EditorClassIdentifier: 
-  dialogue:
-  - This is a test dialogue
-  - Wow crazy!
-  - Amogus
+  dialogueSet:
+  - this
+  - is
+  - words!

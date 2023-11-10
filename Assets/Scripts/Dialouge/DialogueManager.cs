@@ -17,7 +17,7 @@ public class DialogueManager : MonoBehaviour
     public Action OnPlayerMakeChoice;
     KeyCode exitKey = KeyCode.Space;
     int currentDialogue;
-    
+
     void Start()
     {
         SetAllObjectsToEnabled(false);
@@ -25,43 +25,51 @@ public class DialogueManager : MonoBehaviour
 
     private void Update()
     {
-        if(Input.GetKeyDown(exitKey))
+        if (Input.GetKeyDown(exitKey))
         {
             currentDialogue++;
         }
     }
     public void StartDialogueSet(string[] dialogueSet, string name)
     {
+        StopAllCoroutines();
+        EndDialogue();
+        currentDialogue = 0;
+        
         SetAllObjectsToEnabled(true);
         SetAllChoicesToEnabled(false);
-        
+
         _nameText.text = name + "...";
         StartCoroutine(ShowDialogues(dialogueSet));
     }
-    
+
     IEnumerator ShowDialogues(string[] dialogueSet)
     {
         while (currentDialogue < dialogueSet.Length)
         {
             _dialogueText.text = "";
             string text = dialogueSet[currentDialogue];
+            print(text);
             foreach (char c in text)
             {
-                
                 _dialogueText.text += c;
                 yield return new WaitForSeconds(0.05f);
                 //if player has skipped to next dialouge
-                if(text != dialogueSet[currentDialogue])
+                if (text != dialogueSet[currentDialogue])
                 {
                     break;
                 }
-                
+
             }
-            if (_dialogueText.text == text)
+            
+            if (text == dialogueSet[currentDialogue])
             {
-                //has complete the text
-                currentDialogue++;
+                //wait until the dialogue count is increased 
+
+                int temp = currentDialogue;
+                yield return new WaitUntil(() => currentDialogue != temp);
             }
+            //player skipped ignore the wait
 
         }
         EndDialogue();
@@ -78,31 +86,30 @@ public class DialogueManager : MonoBehaviour
     }
     public void EndDialogue()
     {
-       _nameText.text = null;
-        _dialogueText.text = null; 
+        _nameText.text = null;
+        _dialogueText.text = null;
         SetAllChoicesToEnabled(false);
     }
 
     void SetAllObjectsToEnabled(bool value)
     {
-        _nameText.enabled = value;
-        _dialogueText.enabled = value;
-        _textBox.enabled = value;
-        _choiceBox1.enabled = value;
-        _choiceBox2.enabled = value;
-        _choiceText1.enabled = value;
-        _choiceText2.enabled = value;
+        
+            _nameText.enabled = value;
+            _dialogueText.enabled = value;
+            _textBox.enabled = value;
+            _choiceBox1.enabled = value;
+            _choiceBox2.enabled = value;
+            _choiceText1.enabled = value;
+            _choiceText2.enabled = value;
     }
 
     void SetAllChoicesToEnabled(bool value)
     {
-        _choiceBox1.enabled = value;
-        _choiceBox2.enabled = value;
-        _choiceText1.enabled = value;
-        _choiceText2.enabled = value;
+            _choiceBox1.enabled = value;
+            _choiceBox2.enabled = value;
+            _choiceText1.enabled = value;
+            _choiceText2.enabled = value;
     }
-
-  
 }
 
 
