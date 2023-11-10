@@ -1,7 +1,9 @@
 using System.Collections;
 using System.Collections.Generic;
+using System.Net.Http.Headers;
 using UnityEngine;
 using static UnityEditor.Experimental.GraphView.GraphView;
+using static UnityEngine.GraphicsBuffer;
 
 [RequireComponent(typeof(Rigidbody2D))]
 public class StillEnemy : Enemy
@@ -22,7 +24,7 @@ public class StillEnemy : Enemy
     [SerializeField] AnimationClip _moveAnimation;
 
     private Animator anim;
-    
+    private Vector3 defaultScale;
     // Start is called before the first frame update
     protected override void Start()
     {
@@ -39,7 +41,9 @@ public class StillEnemy : Enemy
         useDamageForce = _useDamageForce;
         canMoveOnYAxis = _canMoveOnYAxis;
 
-        anim.Play(_idleAnimation.name);
+
+        anim.Play(_idleAnimation.name, -1, Random.Range(0.0f, 1.0f));
+        defaultScale = transform.localScale;
     }
 
     protected override void OnAttacked()
@@ -62,6 +66,17 @@ public class StillEnemy : Enemy
         moveDirection.y = 0;
         // Move the object towards the destination
         transform.Translate(moveDirection * speed * Time.deltaTime);
+
+        //if move direction is to the right flip the sprite to face the player
+        if(moveDirection.x < 0)
+        {
+            transform.localScale = new Vector3(defaultScale.x, defaultScale.y, defaultScale.z);
+        }
+        else
+        {
+            transform.localScale = new Vector3(-defaultScale.x, defaultScale.y, defaultScale.z);
+        }
+    
         
     }
 
@@ -78,17 +93,28 @@ public class StillEnemy : Enemy
 
     protected override void Attack(GameObject target)
     {
+        if(!canAttack)
+        {
+            return;
+        }
+        anim.Play(_attackAnimation.name, -1, 0);
+        StartCoroutine(AttackMoment(target, 0.5f));
+
+    }
+
+   IEnumerator AttackMoment(GameObject target, float delayTime)
+    {
+        yield return new WaitForSeconds(delayTime);
         base.Attack(target);
-        anim.Play(_attackAnimation.name);
     }
 
     protected override void OnDeathInstance()
     {
 
-        anim.Play(_deathAnimation.name);
+        anim.Play(_deathAnimation.name, -1, 0);
 
         //wait for the animation to finish
-        Invoke("Die", 1.0f);
+        Invoke("Die", 0.5f);
     }
     
     void Die()

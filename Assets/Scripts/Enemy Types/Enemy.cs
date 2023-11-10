@@ -91,6 +91,9 @@ public abstract class Enemy : MonoBehaviour, IDamageable
 
     public void Damage(int damage)
     {
+        //make sprite red
+        GetComponent<SpriteRenderer>().color = Color.red;
+        Invoke("ResetSprite", 0.1f);
         Health -= damage;
         if (Health == 0)
         {
@@ -99,6 +102,10 @@ public abstract class Enemy : MonoBehaviour, IDamageable
        
     }
 
+    void ResetSprite()
+    {
+        GetComponent<SpriteRenderer>().color = Color.white;
+    }
     public void OnDeath()
     {
         controllerInstance.OnPlayerAttackEnemy -= OnAttacked;
