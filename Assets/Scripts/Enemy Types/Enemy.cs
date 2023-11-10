@@ -94,13 +94,20 @@ public abstract class Enemy : MonoBehaviour, IDamageable
         Health -= damage;
         if (Health == 0)
         {
-            OnDeath();
+            OnDeathInstance();
         }
        
     }
 
     public void OnDeath()
     {
+        controllerInstance.OnPlayerAttackEnemy -= OnAttacked;
         Destroy(gameObject);
+    }
+
+    protected virtual void OnDeathInstance()
+    {
+        //the instnace allows each enemy to implement death differently
+        OnDeath();
     }
 }

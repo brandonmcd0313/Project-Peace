@@ -15,11 +15,20 @@ public class StillEnemy : Enemy
     [SerializeField] bool _useDamageForce;
     [SerializeField] bool _canMoveOnYAxis;
 
+    [Header("Enemy Animations")]
+    [SerializeField] AnimationClip _idleAnimation;
+    [SerializeField] AnimationClip _attackAnimation;
+    [SerializeField] AnimationClip _deathAnimation;
+    [SerializeField] AnimationClip _moveAnimation;
+
+    private Animator anim;
+    
     // Start is called before the first frame update
     protected override void Start()
     {
         //prevent the object from moving due to gravity
         GetComponent<Rigidbody2D>().isKinematic = true;
+        anim = GetComponent<Animator>();
         base.Start();
 
         Health = _health;
@@ -29,6 +38,8 @@ public class StillEnemy : Enemy
         damageForce = _damageForce;
         useDamageForce = _useDamageForce;
         canMoveOnYAxis = _canMoveOnYAxis;
+
+        anim.Play(_idleAnimation.name);
     }
 
     protected override void OnAttacked()
@@ -64,4 +75,24 @@ public class StillEnemy : Enemy
         }
         
     }
+
+    protected override void Attack(GameObject target)
+    {
+        base.Attack(target);
+        anim.Play(_attackAnimation.name);
+    }
+
+    protected override void OnDeathInstance()
+    {
+
+        anim.Play(_deathAnimation.name);
+
+        //wait for the animation to finish
+        Invoke("Die", 1.0f);
+    }
+    
+    void Die()
+    {
+        base.OnDeath();
+    }    
 }
