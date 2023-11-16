@@ -3,24 +3,29 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
 using TMPro;
-using UnityEditor.Rendering;
 using System;
+using System.Runtime.CompilerServices;
 
 public class DialogueManager : MonoBehaviour
 {
-
+    [Header("Scene References")]
     [SerializeField] TextMeshProUGUI _nameText, _dialogueText;
     [SerializeField] Image _textBox;
     [SerializeField] Button _choiceBox1, _choiceBox2;
     [SerializeField] TextMeshProUGUI _choiceText1, _choiceText2;
 
+    
     public Action OnPlayerMakeChoice;
     KeyCode exitKey = KeyCode.Space;
     int currentDialogue;
+    int currentAssetIndex;
 
     void Start()
     {
         SetAllObjectsToEnabled(false);
+
+        currentDialogue = 0;
+        currentAssetIndex = 0;
     }
 
     private void Update()
@@ -30,21 +35,50 @@ public class DialogueManager : MonoBehaviour
             currentDialogue++;
         }
     }
-    public void StartDialogueSet(string[] dialogueSet, string name)
+    
+    public void StartAssetSet(ScriptableObject[] assets)
+    {
+        
+    }
+    
+    
+    public void StartAsset(ScriptableObject asset)
     {
         StopAllCoroutines();
         EndDialogue();
         currentDialogue = 0;
-        
-        SetAllObjectsToEnabled(true);
-        SetAllChoicesToEnabled(false);
 
-        _nameText.text = name + "...";
-        StartCoroutine(ShowDialogues(dialogueSet));
+       
+
+        //check the type of asset
+        switch (asset.GetType() )
+        {
+            case Type t when t == typeof(DialogueAsset):
+                DialogueAsset dialogueAsset = (DialogueAsset)asset;
+                StartCoroutine(ShowDialogueSet(dialogueAsset));
+                break;
+            case Type t when t == typeof(ChoicesAsset):
+                ChoicesAsset choicesAsset = (ChoicesAsset)asset;
+                StartCoroutine(ShowChoiceSet(choiceAsset.ChoiceSet));
+                break;
+            case Type t when t == typeof(ImpactTextAsset):
+                ImpactTextAsset impactTextAsset = (ImpactTextAsset)asset;
+                StartCoroutine(ShowChoiceSet(choiceAsset.ChoiceSet));
+                break;
+            default:
+                break;
+        }
+       
     }
 
-    IEnumerator ShowDialogues(string[] dialogueSet)
+    IEnumerator ShowDialogueSet(DialogueAsset asset)
     {
+        SetAllObjectsToEnabled(true);
+        SetAllChoicesToEnabled(false);
+        
+        _nameText.text = " " + asset.PersonName + "...";
+        string[] dialogueSet = asset.DialogueSet;
+
         while (currentDialogue < dialogueSet.Length)
         {
             _dialogueText.text = "";
@@ -74,6 +108,40 @@ public class DialogueManager : MonoBehaviour
         }
         EndDialogue();
     }
+
+    IEnumerator ShowChoiceSet(string[] choiceSet)
+    {
+        while (currentDialogue < dialogueSet.Length)
+        {
+            _dialogueText.text = "";
+            string text = dialogueSet[currentDialogue];
+            print(text);
+            foreach (char c in text)
+            {
+                _dialogueText.text += c;
+                yield return new WaitForSeconds(0.05f);
+                //if player has skipped to next dialouge
+                if (text != dialogueSet[currentDialogue])
+                {
+                    break;
+                }
+
+            }
+
+            if (text == dialogueSet[currentDialogue])
+            {
+                //wait until the dialogue count is increased 
+
+                int temp = currentDialogue;
+                yield return new WaitUntil(() => currentDialogue != temp);
+            }
+            //player skipped ignore the wait
+
+        }
+        EndDialogue();
+    }
+
+
     public void ShowChoice(string dialogue, string name, string choice1, string choice2)
     {
         SetAllObjectsToEnabled(true);

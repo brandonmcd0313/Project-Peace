@@ -5,6 +5,11 @@ using UnityEngine;
 [CreateAssetMenu]
 public class DialogueAsset : ScriptableObject
 {
+    
+    public string OptionalDialogueAssetName;
+
+    public string PersonName;
+    
     [TextArea]
-    public string[] dialogueSet;
+    public string[] DialogueSet;
 }
