@@ -19,7 +19,6 @@ public class DialogueManager : MonoBehaviour
     KeyCode exitKey = KeyCode.Space;
     
     int currentDialogue;
-    int currentAssetIndex;
     bool runningDialogueSet;
 
     string gotoDialogueName = "";
@@ -29,7 +28,6 @@ public class DialogueManager : MonoBehaviour
         SetAllObjectsToEnabled(false);
 
         currentDialogue = 0;
-        currentAssetIndex = 0;
     }
 
     private void Update()
@@ -42,42 +40,61 @@ public class DialogueManager : MonoBehaviour
     
     public void StartAssetSet(ScriptableObject[] assets)
     {
-        currentAssetIndex = 0;
+        print("starting asset set");
         StopAllCoroutines();
         EndDialogue();
-
+        StartCoroutine(GoThroughAssetSet(assets));
     }
     
     IEnumerator GoThroughAssetSet(ScriptableObject[] assets)
     {
         foreach(ScriptableObject asset in assets)
         {
-            if (gotoDialogueName == "")
+            choice1GotoDialogueName = "";
+            choice2GotoDialogueName = "";
+            //check if the asset is a dialogue
+            if (asset.GetType() == typeof(DialogueAsset))
             {
+                DialogueAsset dialogueAsset = (DialogueAsset)asset;
+                string toCheck = dialogueAsset.OptionalDialogueAssetName;
 
+                //run it
+                if (gotoDialogueName == "" || toCheck == gotoDialogueName)
+                {
+                    gotoDialogueName = "";
+                    StartAsset(asset);
+                    runningDialogueSet = true;
+                    //wait until no longer running dialogue set
+                    yield return new WaitUntil(() => runningDialogueSet == false);
+                }
+                else
+                {
+                    if (toCheck == choice1GotoDialogueName || toCheck == choice2GotoDialogueName)
+                    {
+                        //it was the second choice. do NOT prompt
+                        //reset the appropriate choice name
+                        if (toCheck == choice1GotoDialogueName)
+                        {
+                            choice1GotoDialogueName = "";
+                        }
+                        else
+                        {
+                            choice2GotoDialogueName = "";
+                        }
+                    }
+                }
+
+               
+
+            }
+            else
+            {
+                //if not a dialogue, run it
                 StartAsset(asset);
                 runningDialogueSet = true;
                 //wait until no longer running dialogue set
                 yield return new WaitUntil(() => runningDialogueSet == false);
-            }
-            else
-            {
-                //if not a dialogue
-                if(asset.GetType() != typeof(DialogueAsset))
-                {
-                    //do not prompt this 
-                }
-                else
-                {
-                    DialogueAsset dialogueAsset = (DialogueAsset)asset;
-                    if(dialogueAsset.OptionalDialogueAssetName == gotoDialogueName)
-                    {
-                        StartAsset(asset);
-                        runningDialogueSet = true;
-                        //wait until no longer running dialogue set
-                        yield return new WaitUntil(() => runningDialogueSet == false);
-                    }
-                }
+
             }
         }
         EndDialogue();
@@ -128,21 +145,29 @@ public class DialogueManager : MonoBehaviour
                 _dialogueText.text += c;
                 yield return new WaitForSeconds(0.05f);
                 //if player has skipped to next dialouge
-                if (text != dialogueSet[currentDialogue])
+                if(currentDialogue >= dialogueSet.Length)
+                {
+                    break;
+                }
+                else if (text != dialogueSet[currentDialogue])
                 {
                     break;
                 }
 
             }
-            
-            if (text == dialogueSet[currentDialogue])
+            //player skipped ignore the wait
+            if (currentDialogue >= dialogueSet.Length)
+            {
+                break;
+            }
+               else if (text == dialogueSet[currentDialogue])
             {
                 //wait until the dialogue count is increased 
 
                 int temp = currentDialogue;
                 yield return new WaitUntil(() => currentDialogue != temp);
             }
-            //player skipped ignore the wait
+   
 
         }
 
@@ -154,12 +179,28 @@ public class DialogueManager : MonoBehaviour
 
     IEnumerator ShowChoices(ChoicesAsset asset)
     {
+        choice1GotoDialogueName = "";
+        choice2GotoDialogueName = "";
+
         SetAllObjectsToEnabled(true);
-        SetAllChoicesToEnabled(true);
+        SetAllChoicesToEnabled(false);
+      
+
 
         _nameText.text = " " + asset.PersonName + "...";
-        string dialoguePrompt = asset.DialoguePrompt;
-        _dialogueText.text = dialoguePrompt;
+        _dialogueText.text = "";
+        string text = asset.DialoguePrompt;
+        print(text);
+        foreach (char c in text)
+        {
+            _dialogueText.text += c;
+            yield return new WaitForSeconds(0.05f);
+
+        }
+        SetAllChoicesToEnabled(true);
+        //set buttons to the choices
+        _choiceText1.text = asset.Choice1;
+        _choiceText2.text = asset.Choice2;
 
         choice1GotoDialogueName = asset.Choice1GotoDialogueName;
        choice2GotoDialogueName = asset.Choice2GotoDialogueName;
@@ -167,8 +208,7 @@ public class DialogueManager : MonoBehaviour
         //wait until on player make choice is called
         yield return new WaitUntil(() => OnPlayerMakeChoice != null);
 
-        choice1GotoDialogueName = "";
-        choice2GotoDialogueName ="";
+    
 
         _nameText.text = null;
         _dialogueText.text = null;
@@ -205,16 +245,6 @@ public class DialogueManager : MonoBehaviour
     }
 
 
-    public void ShowChoice(string dialogue, string name, string choice1, string choice2)
-    {
-        SetAllObjectsToEnabled(true);
-        SetAllChoicesToEnabled(true);
-
-        _nameText.text = name + "...";
-        _dialogueText.text = dialogue;
-        _choiceText1.text = choice1;
-        _choiceText2.text = choice2;
-    }
     public void EndDialogue()
     {
         _nameText.text = null;
@@ -246,12 +276,14 @@ public class DialogueManager : MonoBehaviour
 
     public void ButtonOne()
     {
+        print("button one");
         gotoDialogueName = choice1GotoDialogueName;
         OnPlayerMakeChoice?.Invoke();
     }
 
     public void ButtonTwo()
     {
+        print("button two");
         gotoDialogueName = choice2GotoDialogueName;
         OnPlayerMakeChoice?.Invoke();
     }
