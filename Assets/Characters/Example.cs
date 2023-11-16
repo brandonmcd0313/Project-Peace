@@ -21,7 +21,7 @@ public class Example : MonoBehaviour
 
     public void StartSpeaking()
     {
-        dialogueManager.StartDialogueSet(_defaultDialogue.DialogueSet, _name);
+        
     }
 
 
