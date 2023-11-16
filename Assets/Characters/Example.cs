@@ -2,15 +2,19 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-public class Example : MonoBehaviour
+public class Example : DialogueUser
 {
     [SerializeField] string _name;
-    [SerializeField] DialogueAsset _defaultDialogue;
-    DialogueManager dialogueManager;
+    [SerializeField] ScriptableObject[] _assets;
+
     // Start is called before the first frame update
     void Start()
     {
-        dialogueManager = FindObjectOfType<DialogueManager>();
+        name = _name;
+        nameForDialogue = _name;
+        assets = _assets;
+
+       base.Start();
     }
 
     // Update is called once per frame
@@ -19,9 +23,10 @@ public class Example : MonoBehaviour
         
     }
 
-    public void StartSpeaking()
+     void StartSpeaking()
     {
-        
+        print("start speaking");
+        OnBeginDialogue();   
     }
 
 
