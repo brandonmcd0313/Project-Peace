@@ -39,20 +39,37 @@ public class PlayerGun : MonoBehaviour
         //on shoot button press
         if (Input.GetButtonDown("Fire1"))
         {
-            //spawn a bullet at the tip of the weapon
-            Vector3 spawnPosition = new Vector3(weapon.transform.position.x + (weapon.GetComponent<BoxCollider2D>().size.x / 2) + (bulletPrefab.GetComponent<BoxCollider2D>().size.x),
-                weapon.transform.position.y, weapon.transform.position.z);
-            GameObject bullet = Instantiate(bulletPrefab, weapon.transform.position, weapon.transform.rotation);
-            bullet.transform.rotation = weapon.transform.rotation;
+            // Spawn a bullet at the tip of the weapon box collider
+            BoxCollider2D weaponCollider = weapon.GetComponent<BoxCollider2D>();
+
+            // Calculate the spawn position at the tip of the weapon, considering both x and y offsets
+            Vector3 spawnPosition = weaponCollider.transform.position +
+                weaponCollider.transform.right * (weaponCollider.size.x / 2 + weaponCollider.offset.x) +
+                weaponCollider.transform.up * weaponCollider.offset.y;
+
+            GameObject bullet = Instantiate(bulletPrefab, spawnPosition, weapon.transform.rotation);
+
+            // Add an offset to the bullet's position to place it at the tip of the collider
+            float bulletOffset = 0.5f; // Adjust this value based on your specific case
+
+            // Set the bullet's position
+            bullet.transform.position = spawnPosition;
+
+            print(GetComponent<PlayerController>().isPlayerFacingRight());
             //add force in the direction the weapon is facing
-            if(GetComponent<PlayerController>().isPlayerFacingRight())
+            if (GetComponent<PlayerController>().isPlayerFacingRight())
             {
                 bullet.GetComponent<Rigidbody2D>().AddForce(weapon.transform.right * bulletSpeed, ForceMode2D.Impulse);
+                spawnPosition += weaponCollider.transform.right * bulletOffset;
+
             }
             else
             {
                 bullet.GetComponent<Rigidbody2D>().AddForce(-weapon.transform.right * bulletSpeed, ForceMode2D.Impulse);
+                spawnPosition += -weaponCollider.transform.right * bulletOffset;
+
             }
+
 
         }
     }
