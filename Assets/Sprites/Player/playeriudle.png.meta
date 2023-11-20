@@ -1,5 +1,5 @@
 fileFormatVersion: 2
-guid: 1d780a43e67750040ade501a28a422ac
+guid: a3e2c12cddd458b4c9a0d9999bee3bd5
 TextureImporter:
   internalIDToNameTable: []
   externalObjects: {}
@@ -129,7 +129,7 @@ TextureImporter:
     serializedVersion: 2
     sprites:
     - serializedVersion: 2
-      name: player_0
+      name: playeriudle_0
       rect:
         serializedVersion: 2
         x: 0
@@ -143,35 +143,14 @@ TextureImporter:
       physicsShape: []
       tessellationDetail: 0
       bones: []
-      spriteID: ed17578f5a20cc04a937994c812ee588
-      internalID: 1666476385
+      spriteID: 9497f9305f4355d458e4dbe22f4f7104
+      internalID: -672579341
       vertices: []
       indices: 
       edges: []
       weights: []
     - serializedVersion: 2
-      name: player_1
-      rect:
-        serializedVersion: 2
-        x: 64
-        y: 64
-        width: 64
-        height: 64
-      alignment: 0
-      pivot: {x: 0, y: 0}
-      border: {x: 0, y: 0, z: 0, w: 0}
-      outline: []
-      physicsShape: []
-      tessellationDetail: 0
-      bones: []
-      spriteID: bddd7e4c74c231b468b808e24f23667b
-      internalID: 289494674
-      vertices: []
-      indices: 
-      edges: []
-      weights: []
-    - serializedVersion: 2
-      name: player_2
+      name: playeriudle_1
       rect:
         serializedVersion: 2
         x: 0
@@ -185,29 +164,8 @@ TextureImporter:
       physicsShape: []
       tessellationDetail: 0
       bones: []
-      spriteID: 960deef634f680e46a4b45a0df435ee9
-      internalID: -134458587
-      vertices: []
-      indices: 
-      edges: []
-      weights: []
-    - serializedVersion: 2
-      name: player_3
-      rect:
-        serializedVersion: 2
-        x: 64
-        y: 0
-        width: 64
-        height: 64
-      alignment: 0
-      pivot: {x: 0, y: 0}
-      border: {x: 0, y: 0, z: 0, w: 0}
-      outline: []
-      physicsShape: []
-      tessellationDetail: 0
-      bones: []
-      spriteID: 5ff6f3462bbbb224da3a11aee3bf818f
-      internalID: -806118660
+      spriteID: 9f467d6922ec30043b7be5ddd7cfb6c4
+      internalID: 1034366517
       vertices: []
       indices: 
       edges: []
@@ -223,10 +181,8 @@ TextureImporter:
     weights: []
     secondaryTextures: []
     nameFileIdTable:
-      player_0: 1666476385
-      player_1: 289494674
-      player_2: -134458587
-      player_3: -806118660
+      playeriudle_0: -672579341
+      playeriudle_1: 1034366517
   spritePackingTag: 
   pSDRemoveMatte: 0
   pSDShowRemoveMatteOption: 0

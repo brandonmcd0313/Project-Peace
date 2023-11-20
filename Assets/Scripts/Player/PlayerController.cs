@@ -11,6 +11,8 @@ public class PlayerController : MonoBehaviour
     Vector3 _defaultScale;
     bool isGrounded;
     bool isFacingRight = true;
+
+    Animator anim;
     // Start is called before the first frame update
     void Start()
     {
@@ -56,6 +58,8 @@ public class PlayerController : MonoBehaviour
         {
             isGrounded = false;
             GetComponent<Rigidbody2D>().AddForce(new Vector2(0, jumpForce), ForceMode2D.Impulse);
+
+            
         
         }
         
@@ -93,6 +97,7 @@ public class PlayerController : MonoBehaviour
         if(collision.gameObject.tag == "Platform")
         {
             isGrounded = true;
+          
         }
     }
 
