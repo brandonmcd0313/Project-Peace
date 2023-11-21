@@ -107,6 +107,9 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   speed: 3
   jumpForce: 7
+  _idleAnimation: {fileID: 7400000, guid: 3b91ccb16bc6087449575220839cfbc9, type: 2}
+  _walkAnimation: {fileID: 7400000, guid: a9fc03bb7139e5a43ab4ae29e0f5ed32, type: 2}
+  _jumpAnimation: {fileID: 7400000, guid: e88157f7fc51bc0478cc2a6d403e2949, type: 2}
 --- !u!114 &5948501893248158091
 MonoBehaviour:
   m_ObjectHideFlags: 0
