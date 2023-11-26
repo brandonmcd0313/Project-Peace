@@ -35,7 +35,10 @@ public abstract class Enemy : MonoBehaviour, IDamageable
 
     protected virtual void Attack(GameObject obj)
     {
-       
+       if(obj == null)
+        {
+            return;
+        }
         if(!canAttack)
         {
             return;

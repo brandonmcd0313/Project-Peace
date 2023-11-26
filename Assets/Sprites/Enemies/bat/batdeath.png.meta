@@ -1,5 +1,5 @@
 fileFormatVersion: 2
-guid: 785183992315c4a49bae01225ff3a380
+guid: e511a0655649b80468725076d25e6e2a
 TextureImporter:
   internalIDToNameTable: []
   externalObjects: {}
@@ -129,7 +129,49 @@ TextureImporter:
     serializedVersion: 2
     sprites:
     - serializedVersion: 2
-      name: batsleep_0
+      name: batdeath_0
+      rect:
+        serializedVersion: 2
+        x: 0
+        y: 128
+        width: 64
+        height: 64
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: 364072edf760596478a92f8e4d4fa4f3
+      internalID: -568429113
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: batdeath_1
+      rect:
+        serializedVersion: 2
+        x: 64
+        y: 128
+        width: 64
+        height: 64
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: 9d1e396818fe811448d343711ab9777e
+      internalID: -1478876591
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: batdeath_2
       rect:
         serializedVersion: 2
         x: 0
@@ -143,14 +185,35 @@ TextureImporter:
       physicsShape: []
       tessellationDetail: 0
       bones: []
-      spriteID: 82f9689cbd3f55c419c097c3a5f8ffbf
-      internalID: -1115118284
+      spriteID: 4ff01e39cd9189143a61142377e42d91
+      internalID: 1037307464
       vertices: []
       indices: 
       edges: []
       weights: []
     - serializedVersion: 2
-      name: batsleep_1
+      name: batdeath_3
+      rect:
+        serializedVersion: 2
+        x: 64
+        y: 64
+        width: 64
+        height: 64
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: 48cb0b7967addfa468bf94f1a27d2a64
+      internalID: 555741318
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: batdeath_4
       rect:
         serializedVersion: 2
         x: 0
@@ -164,8 +227,29 @@ TextureImporter:
       physicsShape: []
       tessellationDetail: 0
       bones: []
-      spriteID: 706f4bad4ddaf70468f5b385476def6a
-      internalID: 1162836725
+      spriteID: ba1eaeba2d1bd1741a395378fa2d6ed6
+      internalID: -1269751241
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: batdeath_5
+      rect:
+        serializedVersion: 2
+        x: 64
+        y: 0
+        width: 64
+        height: 64
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: b3fbc4cb1b920374380d05d9dc3aab7a
+      internalID: 1572798012
       vertices: []
       indices: 
       edges: []
@@ -181,8 +265,12 @@ TextureImporter:
     weights: []
     secondaryTextures: []
     nameFileIdTable:
-      batsleep_0: -1115118284
-      batsleep_1: 1162836725
+      batdeath_0: -568429113
+      batdeath_1: -1478876591
+      batdeath_2: 1037307464
+      batdeath_3: 555741318
+      batdeath_4: -1269751241
+      batdeath_5: 1572798012
   spritePackingTag: 
   pSDRemoveMatte: 0
   pSDShowRemoveMatteOption: 0

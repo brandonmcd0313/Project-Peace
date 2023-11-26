@@ -54,7 +54,7 @@ public class PlayerGun : MonoBehaviour
 
             // Set the bullet's position
             bullet.transform.position = spawnPosition;
-
+        
             //add force in the direction the weapon is facing
             if (GetComponent<PlayerController>().isPlayerFacingRight())
             {

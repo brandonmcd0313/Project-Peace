@@ -2,7 +2,7 @@ using System.Collections;
 using UnityEngine;
 
 [RequireComponent(typeof(Rigidbody2D))]
-public class StillEnemy : Enemy
+public class FlyingEnemy : Enemy
 {
     [Header("Enemy Variables")]
     [SerializeField] int _attackDamage;
@@ -11,7 +11,8 @@ public class StillEnemy : Enemy
     [SerializeField] int _health;
     [SerializeField] float _damageForce;
     [SerializeField] bool _useDamageForce;
-    [SerializeField] bool _canMoveOnYAxis;
+ 
+    bool _canMoveOnYAxis = true;
 
     [Header("Enemy Animations")]
     [SerializeField] AnimationClip _idleAnimation;
@@ -20,8 +21,7 @@ public class StillEnemy : Enemy
     [SerializeField] AnimationClip _moveAnimation;
 
     private Animator anim;
-    private Vector3 defaultScale;
-    private enum EnemyState
+    private Vector3 defaultScale; private enum EnemyState
     {
         Idle,
         Move,
@@ -57,8 +57,10 @@ public class StillEnemy : Enemy
     protected override void OnAttacked()
     {
         base.OnAttacked();
-        // Start simulating the rigidbody on this object so it can fall
+        //start simulating the rigidbody on this object
         GetComponent<Rigidbody2D>().isKinematic = false;
+        //set gravity to zero
+        GetComponent<Rigidbody2D>().gravityScale = 0;
         // Change the state to Attack
         currentState = EnemyState.Attack;
     }
@@ -70,10 +72,8 @@ public class StillEnemy : Enemy
         {
             anim.SetBool("move", true);
             anim.SetBool("idle", false);
-            // Move towards the player on x-axis only
+            //move towards the player 
             Vector3 moveDirection = (player.transform.position - transform.position).normalized;
-            moveDirection.y = 0;
-            // Move the object towards the destination
             transform.Translate(moveDirection * speed * Time.deltaTime);
 
             // If move direction is to the right, flip the sprite to face the player
@@ -86,7 +86,7 @@ public class StillEnemy : Enemy
                 transform.localScale = new Vector3(-defaultScale.x, defaultScale.y, defaultScale.z);
             }
         }
-        
+
     }
 
     private void OnCollisionEnter2D(Collision2D collision)
@@ -120,14 +120,14 @@ public class StillEnemy : Enemy
 
         // After attacking, return to the Move state
         currentState = EnemyState.Move;
-      
+
     }
 
     protected override void OnDeathInstance()
     {
         // Change the state to Die
         currentState = EnemyState.Die;
-      
+
         anim.Play(_deathAnimation.name, -1, 0);
 
         // Wait for the animation to finish
@@ -139,5 +139,6 @@ public class StillEnemy : Enemy
         base.OnDeath();
     }
 
-   
+
 }
+
