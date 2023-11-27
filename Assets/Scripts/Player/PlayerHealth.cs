@@ -15,7 +15,7 @@ public class PlayerHealth : MonoBehaviour, IDamageable
     public void Damage(int damage)
     {
         Health -= damage;
-        if(Health == 0)
+        if(Health <= 0)
         {
             OnDeath();
         
