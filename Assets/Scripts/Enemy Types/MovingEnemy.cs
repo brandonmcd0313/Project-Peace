@@ -1,7 +1,7 @@
 using System.Collections;
-using System.Collections.Generic;
+using TMPro;
 using UnityEngine;
-using UnityEngine.EventSystems;
+using static UnityEngine.GraphicsBuffer;
 
 [RequireComponent(typeof(Rigidbody2D))]
 public class MovingEnemy : Enemy
@@ -15,16 +15,34 @@ public class MovingEnemy : Enemy
     [SerializeField] bool _useDamageForce;
     [SerializeField] bool _canMoveOnYAxis;
 
+    [Header("Enemy Animations")]
+    [SerializeField] AnimationClip _idleAnimation;
+    [SerializeField] AnimationClip _attackAnimation;
+    [SerializeField] AnimationClip _deathAnimation;
+    [SerializeField] AnimationClip _moveAnimation;
+
     [Header("Pathfinding Values")]
     [SerializeField] float _speed;
     [SerializeField] GameObject[] _pathfindingPoints;
+
+    private Animator anim;
+    private Vector3 defaultScale;
+    private enum EnemyState
+    {
+        Idle,
+        Move,
+        Attack,
+        Die
+    }
+
+    private EnemyState currentState = EnemyState.Idle;
+
     // Start is called before the first frame update
     protected override void Start()
     {
-
         GetComponent<Rigidbody2D>().isKinematic = true;
-        StartCoroutine(Movement());
-
+        anim = GetComponent<Animator>();
+        base.Start();
 
         Health = _health;
         attackDamage = _attackDamage;
@@ -34,60 +52,90 @@ public class MovingEnemy : Enemy
         useDamageForce = _useDamageForce;
         canMoveOnYAxis = _canMoveOnYAxis;
 
-        base.Start();
+        anim.SetBool("move", true);
+       anim.SetBool("idle", false);
+     
+        defaultScale = transform.localScale;
 
+        StartCoroutine(Movement());
     }
 
     protected override void OnAttacked()
     {
         base.OnAttacked();
         StopAllCoroutines();
+        // Start simulating the rigidbody on this object so it can fall
         GetComponent<Rigidbody2D>().isKinematic = false;
-
+        // Change the state to Attack
+        currentState = EnemyState.Attack;
     }
 
     protected override void Attack(GameObject obj)
     {
-        base.Attack(obj);
-       
 
-    }
-
-    // Update is called once per frame
-    void FixedUpdate()
-    {
-        if (!isAttacking)
+        if (!canAttack)
         {
             return;
         }
 
-        //move towards the player on x axis only
+        // Change the state to Attack
+        currentState = EnemyState.Attack;
+
+        anim.Play(_attackAnimation.name, -1, 0);
+        StartCoroutine(AttackMoment(obj, 0.5f));
+    }
+    IEnumerator AttackMoment(GameObject target, float delayTime)
+    {
+        yield return new WaitForSeconds(delayTime);
+        base.Attack(target);
+
+        // After attacking, return to the Move state
+        currentState = EnemyState.Move;
+
+    }
+    // Update is called once per frame
+    void FixedUpdate()
+    {
+        if (currentState == EnemyState.Move)
+        {
+            
+            MoveTowardsPlayer();
+        }
+    }
+
+    private void MoveTowardsPlayer()
+    {
         Vector3 moveDirection = (player.transform.position - transform.position).normalized;
         if (!_canMoveOnYAxis)
         {
             moveDirection.y = 0;
         }
-        // Move the object towards the destination
+
         transform.Translate(moveDirection * speed * Time.deltaTime);
 
+        if (moveDirection.x < 0)
+        {
+            transform.localScale = new Vector3(defaultScale.x, defaultScale.y, defaultScale.z);
+        }
+        else
+        {
+            transform.localScale = new Vector3(-defaultScale.x, defaultScale.y, defaultScale.z);
+        }
     }
 
     private void OnCollisionEnter2D(Collision2D collision)
     {
         if (collision.gameObject.tag == "Player" || collision.gameObject.tag == "Bullet")
         {
-            //it has both been attacked and is trying to attack
             OnAttacked();
             Attack(collision.gameObject);
         }
-
     }
 
     IEnumerator Movement()
     {
         while (true)
         {
-            //move to each point 
             for (int i = 0; i < _pathfindingPoints.Length; i++)
             {
                 Vector3 targetPosition = _pathfindingPoints[i].transform.position;
@@ -95,19 +143,14 @@ public class MovingEnemy : Enemy
                 {
                     targetPosition.y = transform.position.y;
                 }
+
                 while (Vector3.Distance(transform.position, targetPosition) >= 0.1f)
                 {
-                    //move towards the player on x axis only
-                    Vector3 moveDirection = (targetPosition - transform.position).normalized;
-
-                    // Move the object towards the destination
-                    transform.Translate(moveDirection * speed * Time.deltaTime);
+                    MoveTowardsPoint(targetPosition);
                     yield return new WaitForEndOfFrame();
                 }
-
             }
 
-            //move back in opposite direction
             for (int i = _pathfindingPoints.Length - 1; i >= 0; i--)
             {
                 Vector3 targetPosition = _pathfindingPoints[i].transform.position;
@@ -115,17 +158,35 @@ public class MovingEnemy : Enemy
                 {
                     targetPosition.y = transform.position.y;
                 }
+
                 while (Vector3.Distance(transform.position, targetPosition) >= 0.1f)
                 {
-                    //move towards the player on x axis only
-                    Vector3 moveDirection = (targetPosition - transform.position).normalized;
-
-                    // Move the object towards the destination
-                    transform.Translate(moveDirection * speed * Time.deltaTime);
+                    MoveTowardsPoint(targetPosition);
                     yield return new WaitForEndOfFrame();
                 }
-
             }
         }
+    }
+    
+    private void MoveTowardsPoint(Vector3 targetPosition)
+    {
+        Vector3 moveDirection = (targetPosition - transform.position).normalized;
+        transform.Translate(moveDirection * speed * Time.deltaTime);
+    }
+
+    protected override void OnDeathInstance()
+    {
+        // Change the state to Die
+        currentState = EnemyState.Die;
+
+        anim.Play(_deathAnimation.name, -1, 0);
+
+        // Wait for the animation to finish
+        Invoke("Die", 0.5f);
+    }
+
+    void Die()
+    {
+        base.OnDeath();
     }
 }

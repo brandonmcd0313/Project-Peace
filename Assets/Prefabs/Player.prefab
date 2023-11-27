@@ -125,7 +125,7 @@ MonoBehaviour:
   bulletPrefab: {fileID: 7788749844952723234, guid: 85ad224648375544eb094339430fbea7, type: 3}
   bulletSpeed: 3
   weapon: {fileID: 5948501894902381155}
-  angleRange: {x: -35, y: 35}
+  angleRange: {x: -60, y: 60}
 --- !u!114 &5948501893248158090
 MonoBehaviour:
   m_ObjectHideFlags: 0
