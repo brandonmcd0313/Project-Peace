@@ -56,13 +56,15 @@ public class FlyingEnemy : Enemy
 
     protected override void OnAttacked()
     {
+        anim.SetBool("move", true);
+        anim.SetBool("idle", false);
         base.OnAttacked();
         //start simulating the rigidbody on this object
         GetComponent<Rigidbody2D>().isKinematic = false;
         //set gravity to zero
         GetComponent<Rigidbody2D>().gravityScale = 0;
-        // Change the state to Attack
-        currentState = EnemyState.Attack;
+        //start moving toward player
+        currentState = EnemyState.Move;
     }
 
     // Update is called once per frame
@@ -101,6 +103,8 @@ public class FlyingEnemy : Enemy
 
     protected override void Attack(GameObject target)
     {
+
+
         if (!canAttack)
         {
             return;

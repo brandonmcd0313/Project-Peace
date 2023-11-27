@@ -66,15 +66,18 @@ public class MovingEnemy : Enemy
         StopAllCoroutines();
         // Start simulating the rigidbody on this object so it can fall
         GetComponent<Rigidbody2D>().isKinematic = false;
-        // Change the state to Attack
-        currentState = EnemyState.Attack;
+        
+        //start moving toward player
+        currentState = EnemyState.Move;
     }
-
+    
     protected override void Attack(GameObject obj)
     {
 
         if (!canAttack)
         {
+            //return to the Move state
+            currentState = EnemyState.Move;
             return;
         }
 
@@ -98,28 +101,22 @@ public class MovingEnemy : Enemy
     {
         if (currentState == EnemyState.Move)
         {
-            
-            MoveTowardsPlayer();
-        }
-    }
+            Vector3 moveDirection = (player.transform.position - transform.position).normalized;
+            if (!_canMoveOnYAxis)
+            {
+                moveDirection.y = 0;
+            }
 
-    private void MoveTowardsPlayer()
-    {
-        Vector3 moveDirection = (player.transform.position - transform.position).normalized;
-        if (!_canMoveOnYAxis)
-        {
-            moveDirection.y = 0;
-        }
+            transform.Translate(moveDirection * speed * Time.deltaTime);
 
-        transform.Translate(moveDirection * speed * Time.deltaTime);
-
-        if (moveDirection.x < 0)
-        {
-            transform.localScale = new Vector3(defaultScale.x, defaultScale.y, defaultScale.z);
-        }
-        else
-        {
-            transform.localScale = new Vector3(-defaultScale.x, defaultScale.y, defaultScale.z);
+            if (moveDirection.x < 0)
+            {
+                transform.localScale = new Vector3(defaultScale.x, defaultScale.y, defaultScale.z);
+            }
+            else
+            {
+                transform.localScale = new Vector3(-defaultScale.x, defaultScale.y, defaultScale.z);
+            }
         }
     }
 

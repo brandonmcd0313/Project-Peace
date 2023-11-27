@@ -59,8 +59,8 @@ public class StillEnemy : Enemy
         base.OnAttacked();
         // Start simulating the rigidbody on this object so it can fall
         GetComponent<Rigidbody2D>().isKinematic = false;
-        // Change the state to Attack
-        currentState = EnemyState.Attack;
+        //start moving toward player
+        currentState = EnemyState.Move;
     }
 
     // Update is called once per frame
