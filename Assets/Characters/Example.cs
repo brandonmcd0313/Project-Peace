@@ -11,8 +11,9 @@ public class Example : DialogueUser
     void Start()
     {
         name = _name;
-        nameForDialogue = _name;
+
         assets = _assets;
+       
 
        base.Start();
     }

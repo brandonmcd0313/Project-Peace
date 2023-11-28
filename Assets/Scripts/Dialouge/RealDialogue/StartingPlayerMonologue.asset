@@ -10,11 +10,12 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 0d86413bbb3ba504983928cf0da9d2c0, type: 3}
-  m_Name: njjmhkmgilk
+  m_Name: StartingPlayerMonologue
   m_EditorClassIdentifier: 
   OptionalDialogueAssetName: 
-  PersonName: 
+  PersonName: You
   DialogueSet:
-  - njl.hguilgk
-  - ugikgfjhyig
-  - yiggikg
+  - Wow this is crazy! I can hit the space bar to go the next dialogue!
+  - I'm headed off to the mysterious cave with my gun.
+  - I can shoot my gun by pressing the left mouse click or left control button!
+  - Now i must head to the right to see what the town is saying about my adventure!

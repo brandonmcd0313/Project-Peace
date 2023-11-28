@@ -1,6 +1,7 @@
 using System;
 using System.Collections;
 using System.Collections.Generic;
+using UnityEditor.VersionControl;
 using UnityEngine;
 
 public abstract class DialogueUser : MonoBehaviour
@@ -10,36 +11,45 @@ public abstract class DialogueUser : MonoBehaviour
     protected string nameForDialogue;
    
     // Start is called before the first frame update
-  protected  void Start()
+  protected void Start()
     {
         //hook up to the dialogue manager
         dialogueManager = FindObjectOfType<DialogueManager>();
-    }
-
-  protected  void OnBeginDialogue()
-    { 
-        print("begin dialogue");
-        //set the name for every assest to the name of this 
-        foreach(ScriptableObject asset in assets)
+        //for each scriptable object check if PersonName is "", if it is set it to the name of this object
+        foreach (ScriptableObject asset in assets)
         {
             switch (asset.GetType())
             {
-                case Type t when t == typeof(DialogueAsset):
+                case System.Type t when t == typeof(DialogueAsset):
                     DialogueAsset dialogueAsset = (DialogueAsset)asset;
-                dialogueAsset.PersonName = nameForDialogue;
+                    if (dialogueAsset.PersonName == "")
+                    {
+                        dialogueAsset.PersonName = name;
+                    }
                     break;
-                case Type t when t == typeof(ChoicesAsset):
+                case System.Type t when t == typeof(ChoicesAsset):
                     ChoicesAsset choicesAsset = (ChoicesAsset)asset;
-                    choicesAsset.PersonName = nameForDialogue;
+                    if (choicesAsset.PersonName == "")
+                    {
+                        choicesAsset.PersonName = name;
+                    }
                     break;
-                case Type t when t == typeof(ImpactTextAsset):
+                case System.Type t when t == typeof(ImpactTextAsset):
                     ImpactTextAsset impactTextAsset = (ImpactTextAsset)asset;
-                    impactTextAsset.PersonName = nameForDialogue;
+                    if (impactTextAsset.PersonName == "")
+                    {
+                        impactTextAsset.PersonName = name;
+                    }
                     break;
                 default:
                     break;
             }
         }
+    }
+
+  protected  void OnBeginDialogue()
+    { 
+        print("begin dialogue");
         dialogueManager.StartAssetSet(assets);
     }
 

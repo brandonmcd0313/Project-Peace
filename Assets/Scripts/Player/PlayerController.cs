@@ -11,7 +11,8 @@ public class PlayerController : MonoBehaviour
     Vector3 _defaultScale;
     bool isGrounded;
     bool isFacingRight = true;
-
+    bool canMove = true;
+    bool canmovecooldown = false;
     Animator anim;
 
 
@@ -34,12 +35,20 @@ public class PlayerController : MonoBehaviour
 
     private void Update()
     {
+        
         if (Input.GetButtonDown("Reset"))
         {
             //reload scene
             UnityEngine.SceneManagement.SceneManager.LoadScene(UnityEngine.SceneManagement.SceneManager.GetActiveScene().name);
         }
 
+        if (!canMove)
+        {
+            anim.SetBool(_jumpAnimation.name, false);
+            anim.SetBool(_walkAnimation.name, false);
+            anim.SetBool(_idleAnimation.name, true);
+            return;
+        }
         if (!isGrounded)
         {
             anim.SetBool(_jumpAnimation.name, true);
@@ -70,9 +79,36 @@ public class PlayerController : MonoBehaviour
 
     }
     // Update is called once per frame
+
+    bool canJump = true;
+    //canmove jump cooldown
+   IEnumerator CanMoveCooldown()
+    {
+        canJump = false;
+        //wait until canmove is true
+        yield return new WaitUntil(() => canMove == true);
+        //wait until space bar is released
+        yield return new WaitUntil(() => Input.GetKeyUp(KeyCode.Space));
+        canJump = true;
+        canmovecooldown = false;
+
+    }
     void FixedUpdate()
     {
-     
+        if(!canMove && !canmovecooldown)
+        {
+            StartCoroutine(CanMoveCooldown());
+            canmovecooldown = true;
+        }
+        if (!canMove)
+        {
+            anim.SetBool(_jumpAnimation.name, false);
+            anim.SetBool(_walkAnimation.name, false);
+            anim.SetBool(_idleAnimation.name, true);
+            return;
+        }
+        
+        
         float horizontalInput = Input.GetAxis("Horizontal");
 
         
@@ -95,7 +131,7 @@ public class PlayerController : MonoBehaviour
         }
 
 
-        if ((Input.GetButton("Jump")|| Input.GetKey(KeyCode.Space)) && isGrounded)
+        if ((Input.GetButton("Jump")|| Input.GetKey(KeyCode.Space)) && isGrounded && canJump)
         {
             isGrounded = false;
             GetComponent<Rigidbody2D>().AddForce(new Vector2(0, jumpForce), ForceMode2D.Impulse);
@@ -143,11 +179,14 @@ public class PlayerController : MonoBehaviour
         
         }
     }
-
-
-
+    
     public bool isPlayerFacingRight()
     {
         return isFacingRight; 
+    }
+
+    public void SetMovement(bool b)
+    {
+        canMove = b;
     }
 }

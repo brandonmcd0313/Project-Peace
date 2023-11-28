@@ -13,7 +13,7 @@ public class DialogueManager : MonoBehaviour
     [SerializeField] Button _choiceBox1, _choiceBox2;
     [SerializeField] TextMeshProUGUI _choiceText1, _choiceText2;
 
-
+    public Action OnDialogueEnd;
     bool hasPlayerMadeChoice;
     
     KeyCode exitKey = KeyCode.Space;
@@ -56,15 +56,11 @@ public class DialogueManager : MonoBehaviour
             {
                 DialogueAsset dialogueAsset = (DialogueAsset)asset;
                 string toCheck = dialogueAsset.OptionalDialogueAssetName;
-                print(toCheck);
-                print("Compared to: ");
-                print(choice1GotoDialogueName);
-                print(choice2GotoDialogueName);
-                print("_______________");
                 //run it
                 if (gotoDialogueName == "" && choice1GotoDialogueName == "" && choice2GotoDialogueName == "")
                 {
                     StartAsset(asset);
+                    print("Started asset");
                     isRunningDialogueSet = true;
                     //wait until no longer running dialogue set
                     yield return new WaitUntil(() => isRunningDialogueSet == false);
@@ -108,6 +104,7 @@ public class DialogueManager : MonoBehaviour
             }
         }
         EndDialogue();
+        
     }
     
     public void StartAsset(ScriptableObject asset)
@@ -259,6 +256,9 @@ public class DialogueManager : MonoBehaviour
         _nameText.text = null;
         _dialogueText.text = null;
         SetAllObjectsToEnabled(false);
+        SetAllChoicesToEnabled(false);
+        OnDialogueEnd.Invoke();
+
     }
 
     void SetAllObjectsToEnabled(bool value)
@@ -267,6 +267,10 @@ public class DialogueManager : MonoBehaviour
             _nameText.enabled = value;
             _dialogueText.enabled = value;
             _textBox.enabled = value;
+        if(_choiceBox1 == null)
+        {
+            return;
+        }
         _choiceBox1.gameObject.SetActive(value);
         _choiceBox2.gameObject.SetActive(value);
         _choiceText1.enabled = value;
@@ -275,13 +279,17 @@ public class DialogueManager : MonoBehaviour
 
     void SetAllChoicesToEnabled(bool value)
     {
+        if (_choiceBox1 == null)
+        {
+            return;
+        }
         _choiceBox1.gameObject.SetActive(value);
         _choiceBox2.gameObject.SetActive(value);
         _choiceText1.enabled = value;
             _choiceText2.enabled = value;
     }
 
-    string choice1GotoDialogueName, choice2GotoDialogueName;
+    string choice1GotoDialogueName = "", choice2GotoDialogueName = "";
 
     public void ButtonOne()
     {
