@@ -10,9 +10,12 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 0d86413bbb3ba504983928cf0da9d2c0, type: 3}
-  m_Name: BaldGuyResponse
+  m_Name: LocsGuy
   m_EditorClassIdentifier: 
   OptionalDialogueAssetName: 
-  PersonName: You
+  PersonName: Niko
   DialogueSet:
-  - Should I call nurse Stacy? How did you get out?
+  - "Hey man what\u2019s up? Oh the cave? "
+  - "Yeah I used to hang in there but like one time I saw this green thing out the
+    corner of my eye and I bolted\u2026"
+  - "I ain\u2019t tryna die."

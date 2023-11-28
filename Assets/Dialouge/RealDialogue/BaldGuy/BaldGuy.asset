@@ -13,7 +13,7 @@ MonoBehaviour:
   m_Name: BaldGuy
   m_EditorClassIdentifier: 
   OptionalDialogueAssetName: 
-  PersonName: Bald Guy
+  PersonName: Randy
   DialogueSet:
-  - 'THERE ARE ALIENS IN THE CAVE! '
-  - THEY WANT TO KILL US AND USE US AS WELCOME MATS!
+  - THERE ARE ALIENS IN THE CAVE!!!
+  - THEY WANT TO KILL US AND USE US AS WELCOME MATS!!!

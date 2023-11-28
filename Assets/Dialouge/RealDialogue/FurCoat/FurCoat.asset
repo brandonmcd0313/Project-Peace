@@ -10,9 +10,11 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 0d86413bbb3ba504983928cf0da9d2c0, type: 3}
-  m_Name: BaldGuyResponse
+  m_Name: FurCoat
   m_EditorClassIdentifier: 
   OptionalDialogueAssetName: 
-  PersonName: You
+  PersonName: Mercedes
   DialogueSet:
-  - Should I call nurse Stacy? How did you get out?
+  - My grandpapi used to tell us about the time he went into the cave...
+  - He always told us "A wizard in disguise he croaks spells with wild eyes"...
+  - He was kinda crazy tho so dont take it serious

@@ -10,9 +10,10 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 0d86413bbb3ba504983928cf0da9d2c0, type: 3}
-  m_Name: BaldGuyResponse
+  m_Name: BasketballGuy
   m_EditorClassIdentifier: 
   OptionalDialogueAssetName: 
-  PersonName: You
+  PersonName: Harley
   DialogueSet:
-  - Should I call nurse Stacy? How did you get out?
+  - Yo you the guy going in the cave?
+  - " I heard there\u2019s like a fall risk in there be safe man."

@@ -10,9 +10,11 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 0d86413bbb3ba504983928cf0da9d2c0, type: 3}
-  m_Name: BaldGuyResponse
+  m_Name: NecklaceGirl
   m_EditorClassIdentifier: 
   OptionalDialogueAssetName: 
-  PersonName: You
+  PersonName: Misty
   DialogueSet:
-  - Should I call nurse Stacy? How did you get out?
+  - "Oh you\u2019re the person going in the cave? "
+  - Not trying to like creep you out or something but I think aliens like live in
+    there.
