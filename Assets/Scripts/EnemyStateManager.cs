@@ -72,4 +72,6 @@ public class EnemyStateManager : MonoBehaviour
         //set scene of anger to this scene
         PlayerPrefs.SetString(SceneOfAnger, SceneManager.GetActiveScene().name);
     }
+
+    
 }
