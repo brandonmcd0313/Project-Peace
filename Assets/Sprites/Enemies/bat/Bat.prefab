@@ -148,7 +148,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   _attackDamage: 2
-  _attackCooldown: 1
+  _attackCooldown: 0.5
   _attackSpeed: 2
   _health: 2
   _damageForce: 3

@@ -48,7 +48,6 @@ public abstract class Enemy : MonoBehaviour, IDamageable
         {
             isPreformingAttack = true;
             damageableObject.Damage(attackDamage);
-            print(this.gameObject.name + " attacked " + obj.name + " for " + attackDamage + " damage");
 
             if(!useDamageForce)
             {
@@ -73,11 +72,11 @@ public abstract class Enemy : MonoBehaviour, IDamageable
 
     protected virtual void OnAttacked()
     {
+        print("on attacked");
         if (isAttacking)
         {
             return;
         }
-            print(gameObject.name + " was attacked");
             canAttack = true;
             isAttacking = true;
         //activate for other enemies

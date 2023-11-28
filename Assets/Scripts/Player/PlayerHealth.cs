@@ -15,6 +15,7 @@ public class PlayerHealth : MonoBehaviour, IDamageable
     public void Damage(int damage)
     {
         Health -= damage;
+        StartCoroutine(FlashRed());
         if(Health <= 0)
         {
             OnDeath();
@@ -27,5 +28,11 @@ public class PlayerHealth : MonoBehaviour, IDamageable
         //reload scene
         UnityEngine.SceneManagement.SceneManager.LoadScene(UnityEngine.SceneManagement.SceneManager.GetActiveScene().name);
     }
-
+    
+    IEnumerator FlashRed()
+    {
+        GetComponent<SpriteRenderer>().color = Color.red;
+        yield return new WaitForSeconds(0.1f);
+        GetComponent<SpriteRenderer>().color = Color.white;
+    }
     }

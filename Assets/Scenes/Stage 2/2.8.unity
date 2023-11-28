@@ -2474,7 +2474,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   _attackDamage: 1
-  _attackCooldown: 1
+  _attackCooldown: 0.3
   _attackSpeed: 1
   _health: 2
   _damageForce: 5
@@ -2653,7 +2653,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   _attackDamage: 1
-  _attackCooldown: 1
+  _attackCooldown: 0.3
   _attackSpeed: 1
   _health: 2
   _damageForce: 5

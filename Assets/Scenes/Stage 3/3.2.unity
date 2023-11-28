@@ -2153,7 +2153,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   _attackDamage: 1
-  _attackCooldown: 1
+  _attackCooldown: 0.5
   _attackSpeed: 1
   _health: 2
   _damageForce: 5
@@ -2219,14 +2219,6 @@ PrefabInstance:
     - target: {fileID: 7499523706600883320, guid: dcfadb18fbce1f74c971fbc04e099e4e, type: 3}
       propertyPath: m_RootOrder
       value: 9
-      objectReference: {fileID: 0}
-    - target: {fileID: 7499523706600883320, guid: dcfadb18fbce1f74c971fbc04e099e4e, type: 3}
-      propertyPath: m_LocalScale.x
-      value: 1
-      objectReference: {fileID: 0}
-    - target: {fileID: 7499523706600883320, guid: dcfadb18fbce1f74c971fbc04e099e4e, type: 3}
-      propertyPath: m_LocalScale.y
-      value: 1
       objectReference: {fileID: 0}
     - target: {fileID: 7499523706600883320, guid: dcfadb18fbce1f74c971fbc04e099e4e, type: 3}
       propertyPath: m_LocalPosition.x
