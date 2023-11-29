@@ -232,21 +232,30 @@ public class DialogueManager : MonoBehaviour
         GameObject textPrefab = asset.ImpactTextPrefab;
 
         //spawn the prefab at the center of the text box
+        /*
         RectTransform textBoxRect = _textBox.GetComponent<RectTransform>();
         // Calculate the center position of the textBox in world space
         Camera mainCamera = Camera.main; 
         Vector3 centerPositionScreen = textBoxRect.position;
         Vector3 centerPositionWorld = mainCamera.ScreenToWorldPoint(centerPositionScreen);
         GameObject impactTextInstance = Instantiate(textPrefab, centerPositionWorld, Quaternion.identity);
-
+        */
+        GameObject impactTextInstance = Instantiate(textPrefab, Vector3.zero, Quaternion.identity);
+        //play the audiclip using the audiosource on main camera
+        AudioSource audioSource = Camera.main.GetComponent<AudioSource>();
+        audioSource.PlayOneShot(asset.ImpactTextSound);
         //wait until the current dialouge count increases
         int temp = currentDialogue;
+        //screw it no escape
+        yield return new WaitForSeconds(20000000f);
+        /*
         yield return new WaitUntil(() => currentDialogue != temp);
 
         _nameText.text = null;
         _dialogueText.text = null;
         Destroy(impactTextInstance);
         isRunningDialogueSet = false;
+        */
 
     }
 

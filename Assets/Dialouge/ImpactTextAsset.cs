@@ -7,4 +7,6 @@ public class ImpactTextAsset : ScriptableObject
     public string PersonName;
     
     public GameObject ImpactTextPrefab;
+
+    public AudioClip ImpactTextSound;
 }

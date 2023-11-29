@@ -31,7 +31,11 @@ public class EnemyStateManager : MonoBehaviour
     void OnSceneLoaded(Scene scene, LoadSceneMode mode)
     {
         controllerInstance = FindObjectOfType<EnemyController>();
-        controllerInstance.OnPlayerAttackEnemy += EnableEnragement;
+        if (controllerInstance != null)
+        {
+            controllerInstance.OnPlayerAttackEnemy += EnableEnragement;
+        }
+        
         print("scene loaded");
         //check if player pref has been activated
         //check if player pref has been activated

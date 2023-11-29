@@ -16,6 +16,8 @@ public class SceneMovementManager : MonoBehaviour
     [Space(5)]
     GameObject _player;
     SceneLocker _sceneLocker;
+
+   string isEnteringRight = "IsEnteringRight";
     // Start is called before the first frame update
     void Start()
     {
@@ -40,6 +42,16 @@ public class SceneMovementManager : MonoBehaviour
         _player.GetComponent<PlayerSceneController>().OnPlayerExitScreenSpaceRight += LoadNextScene;
         _player.GetComponent<PlayerSceneController>().OnPlayerExitScreenSpaceLeft += LoadPreviousScene;
 
+
+        //move player to proper side of screen
+        if (PlayerPrefs.GetInt(isEnteringRight) == 1)
+        {
+            _player.transform.position = new Vector3(8.28f, _player.transform.position.y, _player.transform.position.z);
+        }
+        else
+        {
+            _player.transform.position = new Vector3(-8.28f, _player.transform.position.y, _player.transform.position.z);
+        }
     }
 
     void LoadNextScene()
@@ -54,8 +66,12 @@ public class SceneMovementManager : MonoBehaviour
         //load the next scene
         if (_nextSceneIndex != -1)
         {
+            PlayerPrefs.SetInt(isEnteringRight, 0);
             UnityEngine.SceneManagement.SceneManager.LoadScene(_nextSceneIndex);
+            
         }
+
+        
     }
 
     void LoadPreviousScene()
@@ -70,6 +86,7 @@ public class SceneMovementManager : MonoBehaviour
         //load the previous scene
         if (_previousSceneIndex != -1)
         {
+            PlayerPrefs.SetInt(isEnteringRight, 1);
             UnityEngine.SceneManagement.SceneManager.LoadScene(_previousSceneIndex);
         }
 
