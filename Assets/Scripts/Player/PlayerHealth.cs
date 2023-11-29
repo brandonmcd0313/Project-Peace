@@ -6,15 +6,18 @@ public class PlayerHealth : MonoBehaviour, IDamageable
 {
     //health resets when a new part is entered
     [SerializeField] int _health;
+    [SerializeField] AudioClip _hurtSound;
     public int Health { get; set; }
-
+    AudioSource aud;
     void Start()
     {
         Health = _health;
+        aud = GetComponent<AudioSource>();
     }
     public void Damage(int damage)
     {
         Health -= damage;
+        aud.PlayOneShot(_hurtSound);
         StartCoroutine(FlashRed());
         if(Health <= 0)
         {
