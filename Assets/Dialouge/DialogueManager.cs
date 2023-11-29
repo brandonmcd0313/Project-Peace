@@ -12,6 +12,8 @@ public class DialogueManager : MonoBehaviour
     [SerializeField] Image _textBox;
     [SerializeField] Button _choiceBox1, _choiceBox2;
     [SerializeField] TextMeshProUGUI _choiceText1, _choiceText2;
+    [SerializeField] AudioClip talking;
+
 
     public Action OnDialogueEnd;
     bool hasPlayerMadeChoice;
@@ -146,6 +148,8 @@ public class DialogueManager : MonoBehaviour
         {
             _dialogueText.text = "";
             string text = dialogueSet[currentDialogue];
+            AudioSource audioSource = Camera.main.GetComponent<AudioSource>();
+            audioSource.PlayOneShot(talking);
             foreach (char c in text)
             {
                 _dialogueText.text += c;
@@ -164,12 +168,13 @@ public class DialogueManager : MonoBehaviour
             //player skipped ignore the wait
             if (currentDialogue >= dialogueSet.Length)
             {
+                audioSource.Stop();
                 break;
             }
                else if (text == dialogueSet[currentDialogue])
             {
                 //wait until the dialogue count is increased 
-
+                audioSource.Stop();
                 int temp = currentDialogue;
                 yield return new WaitUntil(() => currentDialogue != temp);
             }
