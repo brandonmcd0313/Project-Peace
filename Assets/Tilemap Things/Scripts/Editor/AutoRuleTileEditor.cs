@@ -1,4 +1,5 @@
-﻿using UnityEngine;
+﻿/*
+using UnityEngine;
 using UnityEditor;
 
 // ----------------------------------------------------------------------------
@@ -21,3 +22,4 @@ public class ObjectBuilderEditor : Editor
         }
     }
 }
+*/

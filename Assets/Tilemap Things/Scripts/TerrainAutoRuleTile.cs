@@ -1,4 +1,4 @@
-﻿using UnityEditor;
+﻿/*
 using UnityEngine;
 using System.Linq;
 
@@ -60,4 +60,4 @@ public class TerrainAutoRuleTile : ScriptableObject
 #endif
 
 }
-
+*/
